@@ -9,26 +9,29 @@ import com.example.shared_kmp.domain.repository.LoginRepository
 import com.example.shared_kmp.domain.usecase.LoginUseCase
 import com.example.shared_kmp.presentation.viewmodel.HomeViewModel
 import com.example.shared_kmp.presentation.viewmodel.LoginViewModel
+import com.example.shared_kmp.presentation.viewmodel.SplashViewModel
 import io.ktor.client.*
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import com.russhwolf.settings.Settings
+import com.example.shared_kmp.navigation.NavigationManager
 
 val appModule = module {
+    single { NavigationManager() }
+
     single { Settings() }
     single<HttpClient> { ApiClient.create() }
     single<LoginApi> { LoginApiImpl(get(), get()) }
     single { LoginMapper() }
 
-    // Pass the 3 arguments: Api, Mapper, Settings
     single<LoginRepository> { LoginRepositoryImpl(get(), get(), get()) }
-
     single { LoginUseCase(get()) }
 
-    // ViewModels
     factory { LoginViewModel(get()) }
     factory { HomeViewModel(get()) }
+    factory { SplashViewModel(get(), get()) } // add navigationManager
 }
+
 
 fun initKoin() {
     startKoin {

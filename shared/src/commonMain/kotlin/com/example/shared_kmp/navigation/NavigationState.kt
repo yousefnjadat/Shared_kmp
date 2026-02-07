@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class NavigationManager {
-    private val _currentScreen = MutableStateFlow<Screen>(Screen.Splash)
-    val currentScreen: StateFlow<Screen> = _currentScreen
+    private val _currentScreen = MutableStateFlow<Screens>(Screens.Splash)
+    val currentScreen: StateFlow<Screens> = _currentScreen
 
-    fun navigateTo(screen: Screen) {
+    fun navigateTo(screen: Screens) {
         _currentScreen.value = screen
     }
 }

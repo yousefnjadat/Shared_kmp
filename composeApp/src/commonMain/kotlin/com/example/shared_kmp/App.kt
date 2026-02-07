@@ -1,57 +1,68 @@
 package com.example.shared_kmp
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.shared_kmp.navigation.NavigationManager
-import com.example.shared_kmp.navigation.Screen
+import com.example.shared_kmp.navigation.Screens
 import com.example.shared_kmp.presentation.theme.AppTheme
 import com.example.shared_kmp.presentation.ui.HomeScreen
 import com.example.shared_kmp.presentation.ui.LoginScreen
 import com.example.shared_kmp.presentation.ui.SplashScreen
 import com.example.shared_kmp.presentation.viewmodel.HomeViewModel
 import com.example.shared_kmp.presentation.viewmodel.LoginViewModel
+import com.example.shared_kmp.presentation.viewmodel.SplashViewModel
 import org.koin.compose.koinInject
 
 @Composable
 fun App() {
     AppTheme {
-        val loginViewModel: LoginViewModel = koinInject()
-        val homeViewModel: HomeViewModel = koinInject()
-        val navigationManager = remember { NavigationManager() }
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            val navigationManager: NavigationManager = koinInject()
+            val screen by navigationManager.currentScreen.collectAsState()
 
-        // Track session check
-        LaunchedEffect(Unit) {
-            val savedUser = loginViewModel.getSavedUserDirectly()
-            if (savedUser != null) {
-                // User logged in
-                navigationManager.navigateTo(Screen.Home)
-                homeViewModel.refreshUser()
-            } else {
-                // Not logged in
-                navigationManager.navigateTo(Screen.Login)
-            }
-        }
-
-        Surface(modifier = Modifier.fillMaxSize()) {
-            val currentScreen by navigationManager.currentScreen.collectAsState()
-
-            when (currentScreen) {
-                is Screen.Splash -> SplashScreen()
-                is Screen.Login -> LoginScreen(
-                    viewModel = loginViewModel,
-                    onLoginSuccess = {
-                        navigationManager.navigateTo(Screen.Home)
+            Crossfade(
+                targetState = screen,
+                label = "ScreenTransition"
+            ) { currentScreen ->
+                when (currentScreen) {
+                    Screens.Splash -> {
+                        val splashViewModel: SplashViewModel = koinInject()
+                        SplashScreen(splashViewModel)
                     }
-                )
-                is Screen.Home -> HomeScreen(
-                    viewModel = homeViewModel,
-                    onLogout = {
-                        loginViewModel.logout()
-                        navigationManager.navigateTo(Screen.Login)
+
+                    Screens.Login -> {
+                        val loginViewModel: LoginViewModel = koinInject()
+                        val homeViewModel: HomeViewModel = koinInject()
+
+                        LoginScreen(
+                            viewModel = loginViewModel,
+                            onLoginSuccess = {
+                                homeViewModel.refreshUser()
+                                navigationManager.navigateTo(Screens.Home)
+                            }
+                        )
                     }
-                )
+
+                    Screens.Home -> {
+                        val homeViewModel: HomeViewModel = koinInject()
+                        val loginViewModel: LoginViewModel = koinInject()
+
+                        HomeScreen(
+                            viewModel = homeViewModel,
+                            onLogout = {
+                                loginViewModel.logout()
+                                navigationManager.navigateTo(Screens.Login)
+                            }
+                        )
+                    }
+                }
             }
         }
     }
