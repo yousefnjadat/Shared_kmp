@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(projects.shared)
+            implementation(compose.materialIconsExtended)
             val koinVersion = "4.1.1"
             // Koin Core with Wasm support
             // Koin Compose for Multiplatform (supports Wasm)

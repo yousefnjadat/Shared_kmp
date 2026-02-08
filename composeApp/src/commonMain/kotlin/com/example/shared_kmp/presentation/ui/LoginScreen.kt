@@ -23,6 +23,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.shared_kmp.common.Result
 import com.example.shared_kmp.presentation.viewmodel.LoginViewModel
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 
 // Define icons for Compose Multiplatform
 
@@ -42,7 +47,6 @@ fun LoginScreen(viewModel: LoginViewModel) {
             repeatMode = RepeatMode.Restart
         )
     )
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -220,16 +224,28 @@ fun LoginScreen(viewModel: LoginViewModel) {
                             )
                         },
                         leadingIcon = {
-                            Text(
-                                "🔒",
-                                color = MaterialTheme.colorScheme.primary
+//                            Text(
+//                                "🔒",
+//                                color = MaterialTheme.colorScheme.primary
+//                            )
+                            Icon(
+                                imageVector = Icons.Filled.Lock,
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                                tint = MaterialTheme.colorScheme.primary
                             )
                         },
                         trailingIcon = {
                             IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                                Text(
-                                    if (passwordVisible) "👁️" else "👁️‍🗨️",
-                                    color = MaterialTheme.colorScheme.primary
+//                                Text(
+//                                    if (passwordVisible) "👁️" else "👁️‍🗨️",
+//                                    color = MaterialTheme.colorScheme.primary
+//                                )
+                                Icon(
+                                    imageVector = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp),
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                         },

@@ -7,6 +7,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.shared_kmp.data.datasource.local.UserLocalDataSource
+import com.example.shared_kmp.di.initKoin
 import com.example.shared_kmp.navigation.NavigationManager
 import com.example.shared_kmp.navigation.Screens
 import com.example.shared_kmp.presentation.theme.AppTheme
@@ -20,6 +21,7 @@ import org.koin.compose.koinInject
 
 @Composable
 fun App() {
+    initKoin()
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             val navigationManager: NavigationManager = koinInject()
