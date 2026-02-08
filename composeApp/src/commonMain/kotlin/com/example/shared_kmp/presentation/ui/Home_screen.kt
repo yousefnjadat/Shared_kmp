@@ -20,10 +20,7 @@ import com.example.shared_kmp.presentation.viewmodel.HomeViewModel
 
 
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel,
-    onLogout: () -> Unit
-) {
+fun HomeScreen(viewModel: HomeViewModel) {
     val user by viewModel.userState.collectAsState()
     var showLogoutDialog by remember { mutableStateOf(false) }
 
@@ -36,7 +33,7 @@ fun HomeScreen(
                 TextButton(
                     onClick = {
                         showLogoutDialog = false
-                        onLogout()
+                        viewModel.logout()
                     }
                 ) {
                     Text("Logout")

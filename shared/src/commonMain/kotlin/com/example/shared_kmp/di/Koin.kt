@@ -1,5 +1,6 @@
 package com.example.shared_kmp.di
 
+import com.example.shared_kmp.data.datasource.local.UserLocalDataSource
 import com.example.shared_kmp.data.datasource.remote.ApiClient
 import com.example.shared_kmp.data.datasource.remote.LoginApi
 import com.example.shared_kmp.data.datasource.remote.LoginApiImpl
@@ -21,14 +22,15 @@ val appModule = module {
 
     single { Settings() }
     single<HttpClient> { ApiClient.create() }
-    single<LoginApi> { LoginApiImpl(get(), get()) }
+    single<LoginApi> { LoginApiImpl(get(), get(), get()) }
     single { LoginMapper() }
 
-    single<LoginRepository> { LoginRepositoryImpl(get(), get(), get()) }
+    single<LoginRepository> { LoginRepositoryImpl(get(), get()) }
     single { LoginUseCase(get()) }
 
-    factory { LoginViewModel(get()) }
-    factory { HomeViewModel(get()) }
+    factory { UserLocalDataSource(get()) }
+    factory { LoginViewModel(get(), get(), get()) }
+    factory { HomeViewModel(get(), get()) }
     factory { SplashViewModel(get(), get()) } // add navigationManager
 }
 

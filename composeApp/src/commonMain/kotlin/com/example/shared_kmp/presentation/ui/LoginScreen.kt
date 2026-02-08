@@ -15,7 +15,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -24,15 +23,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.shared_kmp.common.Result
 import com.example.shared_kmp.presentation.viewmodel.LoginViewModel
-import kotlinx.coroutines.delay
 
 // Define icons for Compose Multiplatform
 
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel,
-    onLoginSuccess: () -> Unit,
-) {
+fun LoginScreen(viewModel: LoginViewModel) {
     var userId by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -47,12 +42,6 @@ fun LoginScreen(
             repeatMode = RepeatMode.Restart
         )
     )
-
-    LaunchedEffect(loginState) {
-        if (loginState is Result.Success) {
-            onLoginSuccess()
-        }
-    }
 
     Box(
         modifier = Modifier

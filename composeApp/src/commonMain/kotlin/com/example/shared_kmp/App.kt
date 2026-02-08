@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import com.example.shared_kmp.data.datasource.local.UserLocalDataSource
 import com.example.shared_kmp.navigation.NavigationManager
 import com.example.shared_kmp.navigation.Screens
 import com.example.shared_kmp.presentation.theme.AppTheme
@@ -20,47 +21,25 @@ import org.koin.compose.koinInject
 @Composable
 fun App() {
     AppTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
+        Surface(modifier = Modifier.fillMaxSize()) {
             val navigationManager: NavigationManager = koinInject()
             val screen by navigationManager.currentScreen.collectAsState()
 
-            Crossfade(
-                targetState = screen,
-                label = "ScreenTransition"
-            ) { currentScreen ->
+            Crossfade(targetState = screen) { currentScreen ->
                 when (currentScreen) {
                     Screens.Splash -> {
-                        val splashViewModel: SplashViewModel = koinInject()
-                        SplashScreen(splashViewModel)
+                        val vm: SplashViewModel = koinInject()
+                        SplashScreen(vm)
                     }
 
                     Screens.Login -> {
-                        val loginViewModel: LoginViewModel = koinInject()
-                        val homeViewModel: HomeViewModel = koinInject()
-
-                        LoginScreen(
-                            viewModel = loginViewModel,
-                            onLoginSuccess = {
-                                homeViewModel.refreshUser()
-                                navigationManager.navigateTo(Screens.Home)
-                            }
-                        )
+                        val vm: LoginViewModel = koinInject()
+                        LoginScreen(viewModel = vm)
                     }
 
                     Screens.Home -> {
-                        val homeViewModel: HomeViewModel = koinInject()
-                        val loginViewModel: LoginViewModel = koinInject()
-
-                        HomeScreen(
-                            viewModel = homeViewModel,
-                            onLogout = {
-                                loginViewModel.logout()
-                                navigationManager.navigateTo(Screens.Login)
-                            }
-                        )
+                        val vm: HomeViewModel = koinInject()
+                        HomeScreen(viewModel = vm)
                     }
                 }
             }

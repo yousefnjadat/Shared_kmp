@@ -2,18 +2,15 @@ package com.example.shared_kmp.data.repository
 
 import com.example.shared_kmp.common.Result
 import com.example.shared_kmp.data.datasource.remote.LoginApi
-import com.example.shared_kmp.data.dto.LoginResponseDto
 import com.example.shared_kmp.data.mapper.LoginMapper
 import com.example.shared_kmp.domain.model.LoginRequest
 import com.example.shared_kmp.domain.model.LoginResponse
 import com.example.shared_kmp.domain.repository.LoginRepository
-import com.russhwolf.settings.Settings
-import kotlinx.serialization.json.Json
+
 
 class LoginRepositoryImpl(
     private val loginApi: LoginApi,
     private val mapper: LoginMapper,
-    private val settings: Settings // Ensure this is injected
 ) : LoginRepository {
 
     override suspend fun login(request: LoginRequest): Result<LoginResponse> {
@@ -22,21 +19,4 @@ class LoginRepositoryImpl(
             else -> result as Result<LoginResponse>
         }
     }
-
-    override suspend fun getSavedUser(): LoginResponse? {
-        val jsonString = settings.getString("login_response_json", "")
-        return if (jsonString.isNotEmpty()) {
-            try {
-                val dto = Json.decodeFromString<LoginResponseDto>(jsonString)
-                LoginMapper().toDomain(dto)
-            } catch (e: Exception) {
-                null
-            }
-        } else null
-    }
-
-    override fun clearSession() {
-        settings.remove("login_response_json")
-    }
-
 }
