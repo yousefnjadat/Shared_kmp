@@ -21,7 +21,6 @@ import org.koin.compose.koinInject
 
 @Composable
 fun App() {
-    initKoin()
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             val navigationManager: NavigationManager = koinInject()

@@ -130,7 +130,7 @@ fun HomeScreen(viewModel: HomeViewModel) {
                                     Icon(
                                         imageVector = Icons.Filled.Person,
                                         contentDescription = null,
-                                        modifier = Modifier.size(20.dp),
+                                        modifier = Modifier.size(50.dp),
                                         tint = MaterialTheme.colorScheme.primary
                                     )
                                 }
