@@ -2,6 +2,7 @@ package com.example.shared_kmp.data.mapper
 
 import com.example.shared_kmp.data.dto.LoginRequestDto
 import com.example.shared_kmp.data.dto.LoginResponseDto
+import com.example.shared_kmp.data.dto.SysUserDto
 import com.example.shared_kmp.domain.model.LoginRequest
 import com.example.shared_kmp.domain.model.LoginResponse
 
@@ -14,7 +15,14 @@ class LoginMapper {
         version = domain.version,
         deviceToken = domain.deviceToken
     )
-
+    fun toDto(domain: LoginResponse): LoginResponseDto = LoginResponseDto(
+        user = SysUserDto(
+            userId = domain.userId,
+            userName = domain.userName
+        ),
+        accessToken = domain.accessToken,
+        status = domain.status
+    )
     fun toDomain(dto: LoginResponseDto): LoginResponse = LoginResponse(
         userId = dto.user?.userId ?: "",
         userName = dto.user?.userName ?: "",

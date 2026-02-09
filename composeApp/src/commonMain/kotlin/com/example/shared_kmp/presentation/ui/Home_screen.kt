@@ -22,6 +22,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.shared_kmp.presentation.viewmodel.HomeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -38,7 +42,10 @@ fun HomeScreen(viewModel: HomeViewModel) {
                 TextButton(
                     onClick = {
                         showLogoutDialog = false
-                        viewModel.logout()
+                        val viewModelScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+                        viewModelScope.launch {
+                            viewModel.logout()
+                        }
                     }
                 ) {
                     Text("Logout")

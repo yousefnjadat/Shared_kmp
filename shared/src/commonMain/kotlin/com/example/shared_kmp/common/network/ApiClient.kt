@@ -1,4 +1,4 @@
-package com.example.shared_kmp.data.datasource.remote
+package com.example.shared_kmp.common.network
 
 import io.ktor.client.*
 import io.ktor.client.plugins.*

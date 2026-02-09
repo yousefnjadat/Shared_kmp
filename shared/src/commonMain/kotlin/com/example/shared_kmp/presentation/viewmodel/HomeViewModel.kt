@@ -1,7 +1,7 @@
 package com.example.shared_kmp.presentation.viewmodel
 
-import com.example.shared_kmp.data.datasource.local.UserLocalDataSource
 import com.example.shared_kmp.domain.model.LoginResponse
+import com.example.shared_kmp.domain.usecase.UserUseCase
 import com.example.shared_kmp.navigation.NavigationManager
 import com.example.shared_kmp.navigation.Screens
 import kotlinx.coroutines.CoroutineScope
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val navigationManager: NavigationManager,
-    private val userLocalDataSource: UserLocalDataSource,
+    private val userUseCase: UserUseCase,
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 ) {
     private val _userState = MutableStateFlow<LoginResponse?>(null)
@@ -24,18 +24,16 @@ class HomeViewModel(
 
     private fun loadUser() {
         coroutineScope.launch {
-            _userState.value = userLocalDataSource.getUser()
+            _userState.value = userUseCase.getUser()
         }
     }
 
     fun refreshUser() {
-        coroutineScope.launch {
-            loadUser()
-        }
+        loadUser()
     }
 
-    fun logout() {
-        userLocalDataSource.deleteUser()
+    suspend fun logout() {
+        userUseCase.deleteUser()
         navigationManager.navigateTo(Screens.Login)
     }
 
