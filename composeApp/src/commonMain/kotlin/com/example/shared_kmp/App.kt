@@ -15,6 +15,7 @@ import com.example.shared_kmp.presentation.viewmodel.HomeViewModel
 import com.example.shared_kmp.presentation.viewmodel.LoginViewModel
 import com.example.shared_kmp.presentation.viewmodel.SplashViewModel
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun App() {
@@ -31,12 +32,12 @@ fun App() {
                     }
 
                     Screens.Login -> {
-                        val vm: LoginViewModel = koinInject()
+                        val vm: LoginViewModel = koinViewModel()
                         LoginScreen(viewModel = vm)
                     }
 
                     Screens.Home -> {
-                        val vm: HomeViewModel = koinInject()
+                        val vm: HomeViewModel = koinViewModel()
                         HomeScreen(viewModel = vm)
                     }
                 }

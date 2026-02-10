@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     kotlin("plugin.serialization") version "2.1.0" // Use the version matching your Kotlin version
+    //room
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 kotlin {
@@ -16,17 +19,17 @@ kotlin {
 
     iosArm64()
     iosSimulatorArm64()
-
-    jvm()
-
-    js {
-        browser()
-    }
-
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-    }
+//
+//    jvm()
+//
+//    js {
+//        browser()
+//    }
+//
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs {
+//        browser()
+//    }
 
     sourceSets {
         commonMain.dependencies {
@@ -52,6 +55,10 @@ kotlin {
             val settingsVersion = "1.2.0"
             implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
             implementation("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
+            //room
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -73,4 +80,17 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+}
+
+dependencies {
+    //android
+    add("kspAndroid", libs.androidx.room.compiler)
+    //ios
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+//    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+}
+//room
+room {
+    schemaDirectory("$projectDir/schemas")
 }

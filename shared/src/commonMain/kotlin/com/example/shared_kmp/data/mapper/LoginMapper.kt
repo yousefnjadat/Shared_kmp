@@ -1,10 +1,11 @@
 package com.example.shared_kmp.data.mapper
 
+import com.example.shared_kmp.common.local.entities.UserEntity
 import com.example.shared_kmp.data.dto.LoginRequestDto
 import com.example.shared_kmp.data.dto.LoginResponseDto
-import com.example.shared_kmp.data.dto.SysUserDto
 import com.example.shared_kmp.domain.model.LoginRequest
 import com.example.shared_kmp.domain.model.LoginResponse
+
 
 class LoginMapper {
     fun toDto(domain: LoginRequest): LoginRequestDto = LoginRequestDto(
@@ -15,18 +16,26 @@ class LoginMapper {
         version = domain.version,
         deviceToken = domain.deviceToken
     )
-    fun toDto(domain: LoginResponse): LoginResponseDto = LoginResponseDto(
-        user = SysUserDto(
-            userId = domain.userId,
-            userName = domain.userName
-        ),
-        accessToken = domain.accessToken,
-        status = domain.status
-    )
+
     fun toDomain(dto: LoginResponseDto): LoginResponse = LoginResponse(
         userId = dto.user?.userId ?: "",
         userName = dto.user?.userName ?: "",
         accessToken = dto.accessToken ?: "",
         status = dto.status ?: false
+    )
+
+    // MISSING PIECES ADDED BELOW:
+    fun toEntity(domain: LoginResponse): UserEntity = UserEntity(
+        userId = domain.userId,
+        userName = domain.userName,
+        accessToken = domain.accessToken,
+        status = domain.status
+    )
+
+    fun fromEntity(entity: UserEntity): LoginResponse = LoginResponse(
+        userId = entity.userId,
+        userName = entity.userName,
+        accessToken = entity.accessToken,
+        status = entity.status
     )
 }

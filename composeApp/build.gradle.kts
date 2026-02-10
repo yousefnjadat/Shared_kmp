@@ -27,18 +27,18 @@ kotlin {
         }
     }
     
-    jvm()
-    
-    js {
-        browser()
-        binaries.executable()
-    }
-    
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser()
-        binaries.executable()
-    }
+//    jvm()
+//
+//    js {
+//        browser()
+//        binaries.executable()
+//    }
+//
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs {
+//        browser()
+//        binaries.executable()
+//    }
     
     sourceSets {
         androidMain.dependencies {
@@ -61,6 +61,7 @@ kotlin {
             // Koin Compose for Multiplatform (supports Wasm)
             implementation("io.insert-koin:koin-core:$koinVersion")
             implementation("io.insert-koin:koin-compose:$koinVersion")
+            implementation("io.insert-koin:koin-compose-viewmodel:${koinVersion}")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

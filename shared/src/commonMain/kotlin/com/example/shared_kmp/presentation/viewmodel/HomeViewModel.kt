@@ -1,40 +1,32 @@
 package com.example.shared_kmp.presentation.viewmodel
 
-import com.example.shared_kmp.domain.model.LoginResponse
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.shared_kmp.domain.usecase.UserUseCase
 import com.example.shared_kmp.navigation.NavigationManager
 import com.example.shared_kmp.navigation.Screens
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.stateIn
 
 class HomeViewModel(
-    private val navigationManager: NavigationManager,
     private val userUseCase: UserUseCase,
-    private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
-) {
-    private val _userState = MutableStateFlow<LoginResponse?>(null)
-    val userState: StateFlow<LoginResponse?> = _userState
+    private val navigationManager: NavigationManager
+) : ViewModel() {
 
-    init {
-        loadUser()
-    }
+    val userState = flow {
+        emit(userUseCase.getUser())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = null
+    )
 
-    private fun loadUser() {
-        coroutineScope.launch {
-            _userState.value = userUseCase.getUser()
+    fun logout() {
+        viewModelScope.launch {
+            userUseCase.deleteUser()
+            navigationManager.navigateTo(Screens.Login)
         }
     }
-
-    fun refreshUser() {
-        loadUser()
-    }
-
-    suspend fun logout() {
-        userUseCase.deleteUser()
-        navigationManager.navigateTo(Screens.Login)
-    }
-
 }

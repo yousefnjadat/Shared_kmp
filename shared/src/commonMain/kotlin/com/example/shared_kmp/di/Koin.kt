@@ -1,5 +1,6 @@
 package com.example.shared_kmp.di
 
+import com.example.shared_kmp.common.local.AppDatabase
 import com.example.shared_kmp.common.network.ApiClient
 import com.example.shared_kmp.data.datasource.local.IUserLocalDataSource
 import com.example.shared_kmp.data.datasource.local.UserLocalDataSourceImpl
@@ -27,14 +28,14 @@ val appModule = module {
     single { Settings() }
     single<HttpClient> { ApiClient.create() }
     single { LoginMapper() }
-
+    single { get<AppDatabase>().userDao() }
     //DataSourceImpl
     single<ILoginDataSource> { LoginDataSourceImpl(get()) }
-    single<IUserLocalDataSource> { UserLocalDataSourceImpl(get()) }
+    single<IUserLocalDataSource> { UserLocalDataSourceImpl(get(), get()) }
 
     //RepositoryImpl
     single<LoginRepository> { LoginRepositoryImpl(get(), get()) }
-    single<IUserRepository> { UserRepositoryImpl(get(),get()) }
+    single<IUserRepository> { UserRepositoryImpl(get(), get()) }
 
     //useCases
     single { UserUseCase(get()) }
