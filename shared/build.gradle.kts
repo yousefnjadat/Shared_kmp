@@ -19,9 +19,9 @@ kotlin {
 
     iosArm64()
     iosSimulatorArm64()
-//
-//    jvm()
-//
+
+    jvm()
+
 //    js {
 //        browser()
 //    }
@@ -55,10 +55,14 @@ kotlin {
             val settingsVersion = "1.2.0"
             implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
             implementation("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
+
             //room
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
 
+            //lifecycle - use the libs references since you already have them in your version catalog
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -66,7 +70,12 @@ kotlin {
         androidMain.dependencies {
             implementation("io.ktor:ktor-client-okhttp:3.0.0")
         }
-
+        jvmMain.dependencies {
+            // Add JVM engine for Ktor
+            implementation("io.ktor:ktor-client-cio:3.0.0")
+            // or use OkHttp for JVM:
+            // implementation("io.ktor:ktor-client-okhttp:3.0.0")
+        }
     }
 }
 
@@ -85,10 +94,17 @@ android {
 dependencies {
     //android
     add("kspAndroid", libs.androidx.room.compiler)
+
     //ios
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 //    add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
+
+//web
+    add("kspJvm", libs.androidx.room.compiler)
+//    add("kspJs", libs.androidx.room.compiler)
+//    add("kspWasmJs", libs.androidx.room.compiler)
+
 }
 //room
 room {

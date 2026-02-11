@@ -28,7 +28,8 @@ val appModule = module {
     single { Settings() }
     single<HttpClient> { ApiClient.create() }
     single { LoginMapper() }
-    single { get<AppDatabase>().userDao() }
+    single { get<AppDatabase>().getDao() }
+
     //DataSourceImpl
     single<ILoginDataSource> { LoginDataSourceImpl(get()) }
     single<IUserLocalDataSource> { UserLocalDataSourceImpl(get(), get()) }

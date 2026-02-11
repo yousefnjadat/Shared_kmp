@@ -3,7 +3,6 @@ package com.example.shared_kmp.data.datasource.local
 import com.example.shared_kmp.common.local.dao.UserDao
 import com.example.shared_kmp.common.local.entities.UserEntity
 import com.example.shared_kmp.loggedInKey
-import com.example.shared_kmp.userKey
 import com.russhwolf.settings.Settings
 
 class UserLocalDataSourceImpl(

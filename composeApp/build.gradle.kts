@@ -27,8 +27,8 @@ kotlin {
         }
     }
     
-//    jvm()
-//
+    jvm()
+
 //    js {
 //        browser()
 //        binaries.executable()

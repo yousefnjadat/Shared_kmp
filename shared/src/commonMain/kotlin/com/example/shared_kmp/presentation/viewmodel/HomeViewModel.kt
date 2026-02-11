@@ -1,7 +1,7 @@
 package com.example.shared_kmp.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
 import com.example.shared_kmp.domain.usecase.UserUseCase
 import com.example.shared_kmp.navigation.NavigationManager
 import com.example.shared_kmp.navigation.Screens
